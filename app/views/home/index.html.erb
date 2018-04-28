@@ -1,0 +1,54 @@
+
+
+	<div class="row" style="padding-top: 10%">
+		<div class="col-md-6 " style="width: 600px;">
+			<div class="panel panel-primary">
+			    <div class="panel-heading">
+			        Latest Orders
+			    </div>
+			    <div class="panel-body">
+			            <% if @orders.size != 0 %>
+			            	<% @orders.each do |order| %>
+								<b>
+								<%= link_to   order_url(order) do %>
+								<%if order.orderType%>
+									<%= "lunch" %> on <%= order.created_at.strftime('%d/%m/%Y') %> </b>
+								<%else%>
+									<%= "breakfast"%> on <%= order.created_at.strftime('%d/%m/%Y') %> </b>
+								<%end%>
+							<% end %>
+						<% end %>
+							<br>
+						<% end %>  
+			            </div>
+			    </div>
+		</div>
+		<div class="col-md-6" style="width: 600px;">
+			<div class="panel panel-primary">
+			    <div class="panel-heading">
+			        Friend's activties
+			    </div>
+			    <div class="panel-body">
+			            	<% if @all.size != 0 %>
+					        	<% @all.each do |order| %>
+									<% order.each do |order|%>
+									<b>
+									<%= order.user.name %> has created an order for <%= order.orderType ? "lunch" : "breakfast" %> from <%= order.place %> 
+									</br></b>
+									<% end %> 
+								<% end %>
+								<br>
+							<% end %>  
+			            </div>
+			    </div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+

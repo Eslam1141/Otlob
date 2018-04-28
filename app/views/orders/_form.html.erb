@@ -1,0 +1,64 @@
+<%= hidden_field_tag "groups", @groupsList %>
+<%= hidden_field_tag "friends", @userFriendsNames %>
+<%= form_with(model: order, local: true) do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :orderType %>
+    <%= form.select( :orderType,  [ ["breakfast", 0], ['lunch', 1] ] )%>
+
+  </div>
+
+  <div class="field">
+    <%= form.label :place %>
+    <%= form.text_field :place %>
+  </div>
+
+   <div class="field">
+  <%= form.label :Menu %>
+   <%= form.file_field :Menu %>
+   </div>
+
+    <%= form.hidden_field :user_id%>
+
+
+    <div class="field">
+      Friend
+      <input id="friend" list="FriendList">
+      <datalist id="FriendList">
+      </datalist>
+      <button  type="button" onclick="inviteFriend()">add</button>
+    </div>
+
+    <div class="field" id="listgroup" >
+      Group
+      <input id="group" list="GroupList">
+      <datalist id="GroupList">
+      </datalist>
+      <button  type="button" onclick="inviteGroup()">add</button>
+    </div>
+
+
+    <div id="invit">
+
+    </div>
+
+
+  <div class="actions">
+    <%= form.submit :Publish, onclick:"invite()"%>
+  </div>
+
+
+
+
+<% end %>

@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<h1 class="etharak knockout">Orders</h1>
+      <% if @userOrders.size != 0 %>
+
+<div class="fresh-table full-color-blue etharak">
+<table id="fresh-table" class="table">
+  <thead>
+    <tr>
+      <th data-field="Type">Type</th>
+      <th data-field="Place">Place</th>
+      <th data-field="Invited">Invited</th>
+      <th data-field="Joiend">Joiend</th>
+      <th data-field="Status">Status</th>
+      <th data-field="Actions" data-formatter="operateFormatter" data-events="operateEvents">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @userOrders.each do |order| %>
+ 
+            <tr>
+              <% if order.orderType == false  %>
+                <td scope="row"> BreakFast  </td>
+              <% else %>
+                <td scope="row"> Lunch </td>
+              <% end %>
+              <td style="text-align: left;"><%= order.place %></td>
+              <td style="text-align: left;"><%= order.inviteds.size %></td>
+              <td style="text-align: left;"><%= order.joineds.size-1 %></td>
+              <% if order.status %>
+              <td style="text-align: left;"> Finished </td>
+              <td style="text-align: left;"><%= link_to 'view', order %></td>
+              <% else %>
+              <td style="text-align: left;">waiting</td>
+              <td table-actions style="text-align: left;">
+                <%= link_to 'view', order %>
+                <p class="finishLink" id="<%= order.id %>" onclick="finish(this)">finish</p>
+                <p class="finishLink" onclick="destroy(this)">cancel</p>
+              </td>
+              <% end %>
+            </tr>
+      <% end %>
+  </tbody>
+</table>
+</div>
+          <% else %>
+       <p>you have no orders</p>
+              <% end %>
+<br>
+
+<%= link_to 'Start New Order', new_order_path ,:class => "etharak button" ,:style => "margin:200px 150px; color:white; "%>

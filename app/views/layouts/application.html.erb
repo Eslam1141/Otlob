@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Otlob</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'animate', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'style', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'bootstrap', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <%= stylesheet_link_tag    'style', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application'%>
+  </head>
+
+  <body>
+  <div class="gtco-loader"></div>
+
+  <nav class="gtco-nav" role="navigation">
+
+    <div class="gtco-container">
+
+      <div class="row">
+        <div class="col-sm-4 col-xs-4">
+          <div id="gtco-logo">
+            <%= image_tag("otlop.png", class: "img-responsive image", id: "navbar-logo") %>
+          </div>
+        </div>
+              <div class="col-xs-8 text-right menu-1">
+          <ul>
+
+             <% if user_signed_in? %>
+                <li><%= link_to('Logout', destroy_user_session_path, method: :delete) %></li>
+              <% else %>
+                <li><%= link_to('Login', new_user_session_path)  %>  </li>
+
+              <% end %>
+
+              <!-- Notification Icon -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bell"></i>
+                  </a>
+                    <ul class="dropdown-menu">
+                      <li class="head text-light bg-dark">
+                        <div class="row">
+                          <div class="col-lg-12 col-sm-12 col-12"  style="color: black">
+                            <span style="float: left; margin-left: 30px; color: blue">Notifications</span>
+                          </div>
+                      </li>
+                      <ul id="notify">
+                      <!-- <div id="notify"></div> -->
+                      <% if @notifications.size !=0 %>
+                      <% @notifications.reverse.each do |n| %>
+
+                      <li class="notification-box">
+                        <div class="row">
+                          <div class="col-lg-6 col-sm-6 col-6 text-center">
+                            <img src="<%= User.find(Order.find(Invited.find(n.invited_id).order_id).user_id).uimage (:thumb) %>" class="w-50" style="float: left; margin-left: 10px;">
+                          </div>
+                          <div class="col-lg-12 col-sm-12 col-12" style="color: black; margin-left: 10px;"><%= n.message %> <%= time_ago_in_words(n.created_at) %> ago</div>
+                          <%= n.status %>
+                          <% if n.status==0 %>
+                          <button id="<%= Invited.find(n.invited_id).order_id %>" style="background-color: #4CAF50; color: white" onclick="joinOrder(this)">Join</button>
+                          <button style="background-color: #f44336; color: white" onclick="cancelOrder(this)">Cancel</button>
+                          <% elsif n.status==1 %>
+                          <button id="<%= Invited.find(n.invited_id).order_id %>" style="background-color: #4CAF50; color: white" onclick="goOrder(this)">Go</button>
+                          <% end %>
+                        </div>
+                        <div role="separator" class="divider"></div>
+                      </li>
+                      <% end %>
+                      <% end %>
+                      </ul>
+                      <li class="bg-dark text-center">
+                        <a href="/events/index" class="text-light" style="color: blue">View All</a>
+                      </li>
+                    </ul>
+                </li>
+            <!-- end notificatuion -->
+            <li class="nav-item active">
+              <%= link_to 'Home |' , home_index_url , :class => "btn-cta" %>
+            </li>
+            <li class="nav-item">
+
+              <%= link_to 'Friends |' , new_friendship_url , :class => "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Groups |' , groups_url , :class => "btn-cta" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Orders |' , orders_url , :class => "btn-cta" %>
+            </li>
+          </ul>
+        </div>
+      </div>
+      </div>
+    </nav>
+
+    <div class="footer">
+      <p>Copy Rights resreved for Otlob©</p>
+
+    </div>
+
+    <%= yield %>
+    <%= javascript_include_tag 'notify'%>
+    <%= javascript_include_tag 'JSGroups'%>
+    <%= javascript_include_tag 'jquery.min'%>
+    <%= javascript_include_tag 'jquery.waypoints.min'%>
+    <%= javascript_include_tag 'main'%>
+    <%= javascript_include_tag 'owl.carousel.min'%>
+    <%= javascript_include_tag 'orderJs'%>
+
+
+  </body>
+</html>
